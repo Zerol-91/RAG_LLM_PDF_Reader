@@ -1,0 +1,7 @@
+# Игнорируем секреты и мусор при сборке образа
+.env
+.venv/
+__pycache__/
+.git/
+my_vector_db/
+chat_history.db

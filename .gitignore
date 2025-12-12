@@ -1,0 +1,7 @@
+.env
+.venv/
+__pycache__/
+my_vector_db/
+chat_history.db
+*.pdf
+*.log
