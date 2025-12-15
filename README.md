@@ -13,8 +13,8 @@ Built with a focus on **DevOps best practices**, this project is fully container
 
 ## Key Features
 
-* ** PDF Ingestion Engine:** upload documents, automatically split text into chunks, and generate vector embeddings locally.
-* ** Hybrid Architecture:**
+* **PDF Ingestion Engine:** upload documents, automatically split text into chunks, and generate vector embeddings locally.
+* **Hybrid Architecture:**
     * **Local Embeddings:** Uses `sentence-transformers` (CPU-optimized) to process data on your machine.
     * **Cloud Inference:** Sends only relevant context to OpenRouter API for high-quality answers.
 * **Persistent Memory:**
@@ -102,7 +102,7 @@ This command runs in "Ephemeral Mode". Data will be lost after stopping the cont
 ---
 
 ### Option 2: Docker Desktop (GUI)
-
+```
 Open Docker Desktop.
 Search for zerol91/rag_chat_pdf in the search bar and click Pull.
 Go to the Images tab and click the Run (Play) button.
@@ -114,7 +114,7 @@ Expand Optional settings and configure:
         Variable: OPENROUTER_API_KEY
         Value: your_actual_key_starts_with_sk-or...
 Click Run.
-
+```
 Open your browser at http://localhost:8501.
 
 ---
