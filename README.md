@@ -29,19 +29,20 @@ The system follows a modular RAG pipeline:
 
 ```mermaid
 graph LR
-    User[User] --> UI[Streamlit Interface]
-    UI --> Logic[App Logic (Python)]
+    User["User"] --> UI["Streamlit Interface"]
+    UI --> Logic["App Logic (Python)"]
     
     subgraph "Local Container (Privacy Zone)"
-        Logic -- Chunking --> Embed[HuggingFace Model (CPU)]
-        Embed --> VectorDB[(ChromaDB)]
-        Logic -- History --> SQL[(SQLite DB)]
+        Logic -- "Chunking" --> Embed["HuggingFace Model (CPU)"]
+        Embed --> VectorDB[("ChromaDB")]
+        Logic -- "History" --> SQL[("SQLite DB")]
     end
     
     subgraph "Cloud API"
-        Logic -- Context + Query --> API[OpenRouter]
-        API --> LLM[Llama 3.3 70B]
+        Logic -- "Context + Query" --> API["OpenRouter"]
+        API --> LLM["Llama 3.3 70B"]
     end
+
 ```
 
 ## Tech Stack
