@@ -28,20 +28,32 @@ Built with a focus on **DevOps best practices**, this project is fully container
 The system follows a modular RAG pipeline:
 
 ```mermaid
-graph LR
-    User["User"] --> UI["Streamlit Interface"]
-    UI --> Logic["App Logic (Python)"]
+graph TD
+    %% Стили и узлы (Везде добавлены кавычки!)
+    User(["👤 User"]) <-->|Chat| UI["Streamlit Interface"]
+    UI <-->|"Input/Output"| Logic["⚙️ App Logic (Python)"]
     
-    subgraph "Local Container (Privacy Zone)"
-        Logic -- "Chunking" --> Embed["HuggingFace Model (CPU)"]
-        Embed --> VectorDB[("ChromaDB")]
-        Logic -- "History" --> SQL[("SQLite DB")]
+    subgraph "Privacy Zone"
+        Logic <-->|"Read/Write History"| SQL[("🗄️ SQLite DB")]
+        
+        Logic -- "Raw Text" --> Splitter("✂️ Chunking Engine")
+        Splitter --> Embed["🧠 HuggingFace Model (CPU)"]
+        Embed -->|"Vectors"| VectorDB[("🔍 ChromaDB")]
+        
+        VectorDB -.->|"Relevant Context"| Logic
     end
     
-    subgraph "Cloud API"
-        Logic -- "Context + Query" --> API["OpenRouter"]
-        API --> LLM["Llama 3.3 70B"]
+    subgraph "☁️ External Cloud"
+        Logic -- "Context + Query" <--> API{"🌐 OpenRouter API"}
+        API <-->|"Inference"| LLM["Llama 3.3 70B"]
     end
+
+    %% Стилизация
+    style User fill:#f9f,stroke:#333,stroke-width:2px
+    style Logic fill:#bbf,stroke:#333,stroke-width:2px
+    style VectorDB fill:#dfd,stroke:#333,stroke-width:2px
+    style SQL fill:#dfd,stroke:#333,stroke-width:2px
+    style LLM fill:#ff9,stroke:#333,stroke-width:2px
 
 ```
 
