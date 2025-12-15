@@ -40,9 +40,14 @@ collection = chroma_client.get_or_create_collection(
     metadata={"hnsw:space": "cosine"} 
 )
 
-# DataBase Part (SQLite)
-conn = sqlite3.connect('chat_history.db', check_same_thread=False)
+DB_FOLDER = "data"
+DB_FILE = os.path.join(DB_FOLDER, "chat_history.db")
+
+os.makedirs(DB_FOLDER, exist_ok=True)
+
+conn = sqlite3.connect(DB_FILE, check_same_thread=False)
 cursor = conn.cursor()
+
 
 # Init table
 def init_db():
@@ -197,7 +202,7 @@ if prompt := st.chat_input("Вопрос..."):
     query_vec = get_embedding(prompt)
     search_params = {
         "query_embeddings": [query_vec],
-        "n_results": 5
+        "n_results": 10
     }
     
     if selected_file != "Во всей базе":
@@ -228,7 +233,13 @@ if prompt := st.chat_input("Вопрос..."):
         system_prompt = "Ты умный и полезный ассистент."
     else:
         context_text = "\n---\n".join(valid_chunks)
-        system_prompt = f"Ответь как умный и полезный ассистент, используя контекст:\n{context_text}"
+        system_prompt = f"""
+        Ты — умный помощник. Пользователь загрузил документы, и ниже приведено их содержимое.
+        Твоя задача — отвечать на вопросы пользователя ТОЛЬКО на основе этого содержимого.
+        Не говори "я не вижу файлов" или "в предоставленном тексте". Отвечай так, будто ты прочитал этот документ целиком.
+
+        Содержимое документа:\n{context_text}
+        """
 
     # Генерация (OpenRouter)
     with st.chat_message("assistant"):
